@@ -121,7 +121,7 @@ class TextButton : wx.Button {
 
 var app = wx.App()
 
-var frame = wx.Frame(nil, wx.ID_ANY, "Swift for Windows 1.6", size: wx.Size(1000, 600), style: wx.DEFAULT_FRAME_STYLE & ~wx.RESIZE_BORDER )
+var frame = wx.Frame(nil, wx.ID_ANY, "Swift for Windows 1.7", size: wx.Size(1000, 600), style: wx.DEFAULT_FRAME_STYLE & ~wx.RESIZE_BORDER )
 
 let icon = wx.Icon(swift_logo_ico, BITMAP_TYPE_ICO_RESOURCE, wx.Size(-1, -1))
 frame.setIcon(icon)
