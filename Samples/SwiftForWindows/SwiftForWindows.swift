@@ -10,7 +10,7 @@
 //              --subsystem -Xlinker windows -Xlinker Application.obj
 //   strip SwiftForWindows.exe
 
-import MinGWCrt
+import Foundation
 import wx
 
 //////////////////////////////
@@ -22,67 +22,31 @@ var run_in_new_window = true
 
 
 ///////////////////////
-// Utility Functions
-///////////////////////
-
-// If we can use Foundation module, this function will be changed or removed.
-func GetSlashPositionFromLast(_ arg : String) -> Int {
-  var slash_len = 0;
-
-  if let offset = strrchr(arg, 0x5C) {  // "\\"
-    slash_len = Int(strlen(offset))
-  }
-
-  if let offset = strrchr(arg, 0x2F) {  // "/"
-    let length = Int(strlen(offset))
-    if (length < slash_len) {
-      slash_len = length
-    }
-  }
-
-  if (slash_len == 0) {
-    return 0
-  }
-  return arg.characters.count - slash_len
-}
-
-func getcwd() -> String {
-
-    let cwd = MinGWCrt.getcwd(nil, _MAX_PATH)
-    if cwd == nil {
-      return ""
-    }
-    defer { free(cwd) }
-    if let path = String(validatingUTF8: cwd!) {
-      return path
-    }
-    
-    return ""
-}
-
-///////////////////////
 // Common Variables
 ///////////////////////
 
 // Find out the located directory of this program
-let arg = CommandLine.arguments[0]
-let slash_pos = GetSlashPositionFromLast(arg)
-var default_prefix = String(arg.characters.prefix(slash_pos))
+let program_path = CommandLine.arguments[0].replacingOccurrences(of: "\\", with: "/")
+let program_dir = NSString(string: program_path).deletingLastPathComponent
+var installed_dir = program_dir
 
-// make default_prefix be the absolute path
-if (slash_pos == 0) {
-  default_prefix = getcwd()
+// make installed_dir be an absolute path
+let current_dir = FileManager.default.currentDirectoryPath
+
+if installed_dir == "" {
+  installed_dir = current_dir
 } else {
-  let index_1 = default_prefix.index(default_prefix.startIndex, offsetBy: 1)
-  if (String(default_prefix[index_1]) != ":" ) {
-    default_prefix = getcwd() + "\\" + default_prefix
+  let index_1 = installed_dir.index(installed_dir.startIndex, offsetBy: 1)
+  let is_absolute_path = installed_dir[index_1] == ":" || installed_dir.starts(with: "/")
+  if !is_absolute_path {
+    installed_dir = current_dir + "/" + installed_dir
   }
 }
 
 var swift_source : String = ""
 var swift_out_exe : String = ""
-var init_swift_compiler_exe : String = default_prefix + "\\usr\\bin\\swiftc.exe"
-var swift_src_dir : String = default_prefix + "\\My Programs"
+var init_swift_compiler_exe : String = installed_dir + "/usr/bin/swiftc.exe"
+var swift_src_dir : String = installed_dir + "/My Programs"
 var swift_compiler_exe : String = init_swift_compiler_exe
 var swift_logo_ico : String = "swift_logo"
   
@@ -121,7 +85,7 @@ class TextButton : wx.Button {
 
 var app = wx.App()
 
-var frame = wx.Frame(nil, wx.ID_ANY, "Swift for Windows 1.7", size: wx.Size(1000, 600), style: wx.DEFAULT_FRAME_STYLE & ~wx.RESIZE_BORDER )
+var frame = wx.Frame(nil, wx.ID_ANY, "Swift for Windows 1.8", size: wx.Size(1000, 600), style: wx.DEFAULT_FRAME_STYLE & ~wx.RESIZE_BORDER )
 
 let icon = wx.Icon(swift_logo_ico, BITMAP_TYPE_ICO_RESOURCE, wx.Size(-1, -1))
 frame.setIcon(icon)
@@ -272,12 +236,12 @@ func onCompilerSettingDblClick(_ event: Event) {
 }
 
 func onCompile(_ event: Event) {
-  if String(swift_source.characters.suffix(6)) != ".swift" {
+  if String(swift_source.suffix(6)) != ".swift" {
     _ = wx.MessageDialog(frame, "Select a *.swift file", "Compile", style:wx.OK).showModal()
     return
   }
-  let len = swift_source.characters.count
-  swift_out_exe = String(swift_source.characters.prefix(len - 6)) + ".exe"
+  let len = swift_source.count
+  swift_out_exe = String(swift_source.prefix(len - 6)) + ".exe"
 
   if !wx.fileExists(swift_compiler_exe) {
     _ = wx.MessageDialog(frame, "Compiler is not found.\nSet Swift Compiler", "Compile", style:wx.OK).showModal()
@@ -286,14 +250,14 @@ func onCompile(_ event: Event) {
   
   log_textctrl.clear()
   var message : String = ""
-  var compiler_command = "\"" + swift_compiler_exe + "\" -swift-version 3 \"" + swift_source + "\" -o \"" + swift_out_exe + "\""
+  var compiler_command = "\"" + swift_compiler_exe + "\" -swift-version 4 \"" + swift_source + "\" -o \"" + swift_out_exe + "\""
   if (link_with_subsystem_windows) {
     compiler_command = compiler_command + " -Xlinker --subsystem -Xlinker windows"
   }
   
   let exec_output = wx.executeOutErr(compiler_command)
   message = compiler_command + "\n"
-  if exec_output.characters.count == 0 {
+  if exec_output.count == 0 {
     message += "\n" + "Successfully compiled" + "\n"
   } else { 
     message += "\n" + exec_output + "\n"
@@ -303,7 +267,7 @@ func onCompile(_ event: Event) {
 }
 
 func onRun(_ event: Event) {
-  if String(swift_source.characters.suffix(6)) != ".swift" {
+  if String(swift_source.suffix(6)) != ".swift" {
     _ = wx.MessageDialog(frame, "Select a *.swift file", "Compile", style:wx.OK).showModal()
     return
   }
@@ -313,10 +277,9 @@ func onRun(_ event: Event) {
   }
   log_textctrl.clear()
   if run_in_new_window {
-    let slash_pos = GetSlashPositionFromLast(swift_out_exe)
-    let dif_of_swift_out_exe = String(swift_out_exe.characters.prefix(slash_pos)) + "\\"
+    let directory_of_swift_out_exe = String(describing: NSString(string: swift_out_exe).deletingLastPathComponent) + "\\"
   
-    let run_command = "cmd /C start /wait cmd /K" + " \"cd " + dif_of_swift_out_exe + "&\"" + swift_out_exe + "\"\""
+    let run_command = "cmd /C start /wait cmd /K" + " \"cd " + directory_of_swift_out_exe + "&\"" + swift_out_exe + "\"\""
     _ = wx.executeOutErr(run_command)
   } else {
     let run_command = "cmd /C \"" + swift_out_exe + "\""
