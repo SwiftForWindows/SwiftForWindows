@@ -281,15 +281,15 @@ int main(int argc, char **argv)
   HARD: -m i386pep -Bdynamic 
   PASS: -o <output>
   HARD: "mingw64\\x86_64-w64-mingw32\\lib\\crt2.o" 
-  HARD: "mingw64\\lib\\gcc\\x86_64-w64-mingw32\\6.3.0\\crtbegin.o" 
+  HARD: "mingw64\\lib\\gcc\\x86_64-w64-mingw32\\7.3.0\\crtbegin.o" 
   PROC: -L<user -L options> 
-  HARD: "-Lmingw64\\lib\\gcc\\x86_64-w64-mingw32\\6.3.0" 
+  HARD: "-Lmingw64\\lib\\gcc\\x86_64-w64-mingw32\\7.3.0" 
   HARD: "-Lmingw64\\x86_64-w64-mingw32\\lib" 
   HARD: "-Lmingw64\\lib" 
   HARD: "-Lmingw64\\x86_64-w64-mingw32/sys-root/mingw/lib" 
   PROC: object file, -l options, @ options, -Xlinker options are passed sequencially.
   HARD: -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt 
-  HARD: "mingw64\\lib\\gcc\\x86_64-w64-mingw32\\6.3.0\\crtend.o"
+  HARD: "mingw64\\lib\\gcc\\x86_64-w64-mingw32\\7.3.0\\crtend.o"
   */  
 	int t = 0;
 	ld_argv[t++] = path_ld;
@@ -303,7 +303,7 @@ int main(int argc, char **argv)
   
 	sprintf(hard_crt2, "%s\\x86_64-w64-mingw32\\lib\\crt2.o", mingw64_dir);
 	ld_argv[t++] = hard_crt2;
-	sprintf(hard_crtbegin, "%s\\lib\\gcc\\x86_64-w64-mingw32\\6.3.0\\crtbegin.o", mingw64_dir);
+	sprintf(hard_crtbegin, "%s\\lib\\gcc\\x86_64-w64-mingw32\\7.3.0\\crtbegin.o", mingw64_dir);
 	ld_argv[t++] = hard_crtbegin;
   
   // User added -L options
@@ -312,7 +312,7 @@ int main(int argc, char **argv)
     ld_argv[t++] = proc_L_option[i];
   }
   
-  sprintf(hard_L_option1, "-L%s\\lib\\gcc\\x86_64-w64-mingw32\\6.3.0", mingw64_dir);
+  sprintf(hard_L_option1, "-L%s\\lib\\gcc\\x86_64-w64-mingw32\\7.3.0", mingw64_dir);
   ld_argv[t++] = hard_L_option1;
   sprintf(hard_L_option2, "-L%s\\x86_64-w64-mingw32\\lib", mingw64_dir);
   ld_argv[t++] = hard_L_option2;
@@ -347,7 +347,7 @@ int main(int argc, char **argv)
 	ld_argv[t++] = "-lmingwex";
 	ld_argv[t++] = "-lmsvcrt";
 
-	sprintf(hard_crtend, "%s\\lib\\gcc\\x86_64-w64-mingw32\\6.3.0\\crtend.o", mingw64_dir);
+	sprintf(hard_crtend, "%s\\lib\\gcc\\x86_64-w64-mingw32\\7.3.0\\crtend.o", mingw64_dir);
 	ld_argv[t++] = hard_crtend;
 
 	ld_argv[t] = NULL;
