@@ -1,3 +1,13 @@
+Swift for Windows 1.9.1 (2018-02-14)
+====================================
+Fixed Bugs
+----------
+- Fixed 'corecrt_startup.h' file not found
+  
+Compiler Source
+---------------
+- Same to the version 1.9.
+
 Swift for Windows 1.9 (2018-02-14)
 ==================================
 New Features, Improvements

@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Swift for Windows"
-!define PRODUCT_VERSION "1.9"
+!define PRODUCT_VERSION "1.9.1"
 !define PRODUCT_WEB_SITE "https://swiftforwindows.github.io/"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\SwiftForWindows.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
@@ -76,7 +76,7 @@ FunctionEnd
 
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "SwiftForWindows-1.9.exe"
+OutFile "SwiftForWindows-1.9.1.exe"
 InstallDir "C:\Swift"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
@@ -411,6 +411,7 @@ Section "MainSection" SEC01
   SetOutPath "$INSTDIR\mingw64\x86_64-w64-mingw32\include"
   File "Swift\mingw64\x86_64-w64-mingw32\include\assert.h"
   File "Swift\mingw64\x86_64-w64-mingw32\include\complex.h"
+  File "Swift\mingw64\x86_64-w64-mingw32\include\corecrt_startup.h"
   File "Swift\mingw64\x86_64-w64-mingw32\include\crtdefs.h"
   File "Swift\mingw64\x86_64-w64-mingw32\include\ctype.h"
   File "Swift\mingw64\x86_64-w64-mingw32\include\direct.h"
@@ -855,6 +856,7 @@ Section Uninstall
   Delete "$INSTDIR\mingw64\lib\libdl.a"
   Delete "$INSTDIR\mingw64\x86_64-w64-mingw32\include\assert.h"
   Delete "$INSTDIR\mingw64\x86_64-w64-mingw32\include\complex.h"
+  Delete "$INSTDIR\mingw64\x86_64-w64-mingw32\include\corecrt_startup.h"
   Delete "$INSTDIR\mingw64\x86_64-w64-mingw32\include\crtdefs.h"
   Delete "$INSTDIR\mingw64\x86_64-w64-mingw32\include\ctype.h"
   Delete "$INSTDIR\mingw64\x86_64-w64-mingw32\include\direct.h"
