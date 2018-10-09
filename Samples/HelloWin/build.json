@@ -1,0 +1,10 @@
+{
+	"sfwbuild_version": "0.1",
+
+	"executable_name": "HelloWin",
+	"sources": [
+		"HelloWin.swift"
+	],
+	"subsystem": "windows",
+	"strip": true
+}

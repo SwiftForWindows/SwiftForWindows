@@ -1,3 +1,19 @@
+Swift for Windows 2.0 (2018-10-09)
+==================================
+New Features, Improvements
+--------------------------
+- Includes Swift 4.1.3 compiler
+- Simplified the installed directory structure
+- Added the folder RuntimeEnv where all runtime DLL's exists and your compiled programs will be saved.
+- Added the command line tool 'sfwbuild' to compile multiple Swift files together.
+- Added the command line tool 'run' to run a program in the Swift runtime environment.
+- GUI is updated to recognize 'build.json' and added the button to invoke the 'Swift Tools Command Prompt'
+  
+Compiler Source
+---------------
+- https://github.com/tinysun212/swift-windows/releases/tag/swift-4.1.3+mingw.20180930
+  - Based on: https://github.com/apple/swift/releases/tag/swift-4.1.3-RELEASE
+
 Swift for Windows 1.9.1 (2018-02-14)
 ====================================
 Fixed Bugs
