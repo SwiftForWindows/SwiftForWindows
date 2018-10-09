@@ -1,0 +1,8 @@
+{
+	"sfwbuild_version": "0.1",
+
+	"executable_name": "Hello",
+	"sources": [
+		"Hello.swift"
+	]
+}

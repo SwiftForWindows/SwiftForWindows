@@ -1,0 +1,10 @@
+{
+	"sfwbuild_version": "0.1",
+
+	"executable_name": "sfwbuild",
+	"sources": [
+		"sfwbuild.swift"
+	],
+	"subsystem": "console",
+	"strip": true
+}

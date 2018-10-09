@@ -1,0 +1,10 @@
+{
+	"sfwbuild_version": "0.1",
+
+	"executable_name": "NSUrlTest",
+	"sources": [
+		"NSUrlTest.swift"
+	],
+	"subsystem": "console",
+	"strip": true
+}
