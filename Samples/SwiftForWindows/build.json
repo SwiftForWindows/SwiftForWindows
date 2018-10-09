@@ -1,0 +1,13 @@
+{
+	"sfwbuild_version": "0.1",
+
+	"executable_name": "Swift for Windows",
+	"sources": [
+		"main.swift",
+		"SfwView.swift",
+		"SfwController.swift",
+		"Application.rc"
+	],
+	"subsystem": "windows",
+	"strip": true
+}

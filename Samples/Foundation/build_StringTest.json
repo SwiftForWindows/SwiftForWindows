@@ -1,0 +1,10 @@
+{
+	"sfwbuild_version": "0.1",
+
+	"executable_name": "StringTest",
+	"sources": [
+		"StringTest.swift"
+	],
+	"subsystem": "console",
+	"strip": true
+}
